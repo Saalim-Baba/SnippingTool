@@ -1,8 +1,10 @@
 from tkinter import filedialog
 from mss import mss
 from tkinter import *
-from PIL import Image, ImageTk
-from numpy.ma.core import filled
+from PIL import Image, ImageTk, ImageEnhance
+from datetime import datetime
+
+from wx.lib.sized_controls import border
 
 with mss() as sct:
     screenshot = sct.grab(sct.monitors[1])
@@ -11,7 +13,10 @@ img = Image.frombytes('RGB', (screenshot.width, screenshot.height), screenshot.r
 root = Tk()
 root.attributes('-fullscreen', True)
 
-bg_img = ImageTk.PhotoImage(img)
+
+enhancer = ImageEnhance.Brightness(img)
+brightened_image = enhancer.enhance(0.5)
+bg_img = ImageTk.PhotoImage(brightened_image)
 
 bg_label = Label(root, image=bg_img)
 bg_label.place(x=0, y=0, relwidth=1, relheight=1)
@@ -22,14 +27,12 @@ first = True
 def quit_root():
     root.destroy()
 
-
 def save_path(image):
-    path = filedialog.asksaveasfilename(defaultextension=".jpg",
+    path = filedialog.asksaveasfilename(initialfile=f"Screenshot {datetime.now():%Y-%m-%d-%H-%M}",defaultextension=".jpg",
                                         filetypes=[("JPEG files", "*.jpg"), ("PNG files", "*.png")])
     if path:
         image.save(path)
     root.destroy()
-
 
 def clickEvent(event=None):
     global first, first_x, first_y
@@ -80,11 +83,9 @@ def move(event=None):
         save_path(new_image)
 
 
-card = Canvas(root, width=0, height=0, bg='blue')
-quit_button = Button(root, text="Quit", font=('Comic Sans', 13, 'bold'), command=quit_root)
-button = Button(root, text="Save", font=('Comic Sans', 13, 'bold'), command=save_path)
-quit_button.place(x=100, y=30)
-button.place(x=200, y=30)
+card = Canvas(root, width=0, height=0, highlightthickness=0,  bd=0, bg="gray64")
+root.wm_attributes('-transparentcolor','gray64')
+card.pack()
 root.bind("<B1-Motion>", clickEvent)
 root.bind("<ButtonRelease-1>", move)
 

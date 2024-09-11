@@ -4,8 +4,6 @@ from tkinter import *
 from PIL import Image, ImageTk, ImageEnhance
 from datetime import datetime
 
-from wx.lib.sized_controls import border
-
 with mss() as sct:
     screenshot = sct.grab(sct.monitors[1])
 img = Image.frombytes('RGB', (screenshot.width, screenshot.height), screenshot.rgb)
@@ -34,7 +32,7 @@ def save_path(image):
         image.save(path)
     root.destroy()
 
-def clickEvent(event=None):
+def dragEvent(event=None):
     global first, first_x, first_y
     if first:
         first_x, first_y = event.x, event.y
@@ -86,7 +84,7 @@ def move(event=None):
 card = Canvas(root, width=0, height=0, highlightthickness=0,  bd=0, bg="gray64")
 root.wm_attributes('-transparentcolor','gray64')
 card.pack()
-root.bind("<B1-Motion>", clickEvent)
+root.bind("<B1-Motion>", dragEvent)
 root.bind("<ButtonRelease-1>", move)
 
 root.mainloop()

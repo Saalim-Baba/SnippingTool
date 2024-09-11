@@ -9,8 +9,17 @@ with mss() as sct:
 img = Image.frombytes('RGB', (screenshot.width, screenshot.height), screenshot.rgb)
 
 root = Tk()
+
+underlay = Toplevel(root)
+
+underlay.attributes("-fullscreen", True)
 root.attributes('-fullscreen', True)
 
+underlay.lower()
+
+original_img = ImageTk.PhotoImage(img)
+bg_second = Label(underlay, image=original_img)
+bg_second.place(x=0, y=0, relwidth=1, relheight=1)
 
 enhancer = ImageEnhance.Brightness(img)
 brightened_image = enhancer.enhance(0.5)
@@ -82,8 +91,8 @@ def move(event=None):
 
 
 card = Canvas(root, width=0, height=0, highlightthickness=0,  bd=0, bg="gray64")
-root.wm_attributes('-transparentcolor','gray64')
 card.pack()
+root.wm_attributes("-transparentcolor", "gray64")
 root.bind("<B1-Motion>", dragEvent)
 root.bind("<ButtonRelease-1>", move)
 

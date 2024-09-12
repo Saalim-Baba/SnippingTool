@@ -4,13 +4,10 @@ This project is a recreation of the Snipping Tool using **Tkinter**, **PIL (Pill
 
 ## ✨ Features
 
-- 📸 **Screenshot Capture**: Take screenshots of the entire screen.
-- ✂️ **Cropping Tool**: Crop screenshots to focus on key areas.
+- 📸 **Screenshot Capture**: You can choose the area of the screen you want to screenshot
 - 💾 **Save Functionality**: Save the captured.
 
 ## 🛠️ Requirements
-
-Make sure to have the following Python libraries installed:
 
 ```bash
 pip install -r /path/to/requirements.txt
